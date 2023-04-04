@@ -2,6 +2,8 @@ package com.example.rafdnevnjak.view.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.rafdnevnjak.R;

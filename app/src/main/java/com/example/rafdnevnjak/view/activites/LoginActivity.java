@@ -1,12 +1,16 @@
-package com.example.rafdnevnjak;
+package com.example.rafdnevnjak.view.activites;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.view.activites.MainActivity;
 
 import java.io.BufferedReader;
@@ -27,8 +31,24 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        splashScreen.setKeepOnScreenCondition(()->{
+            try {
+                Thread.sleep(2000);
+            }catch (InterruptedException e){
+                throw new RuntimeException(e);
+            }
+            SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+            String s = sharedPreferences.getString("username", null);
+            if(s!=null){
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+            }
+            return false;
+
+        });
+        setContentView(R.layout.activity_login);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
@@ -82,6 +102,12 @@ public class LoginActivity extends AppCompatActivity {
 //                    System.out.println(emailGuessed+" "+usernameGuessed+" "+passwordGuessed);
 //                    System.out.println("--------------");
                     if(email.equals(emailGuessed) && username.equals(usernameGuessed) && password.equals(passwordGuessed)){
+                        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("email", email);
+                        editor.putString("username", username);
+                        editor.putString("password", password);
+                        editor.apply();
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
                     }
