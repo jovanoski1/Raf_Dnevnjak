@@ -1,6 +1,2 @@
-mihailjovanoski14@gmail.com
-mjcar
-Mihail01
-aaaa@gmail.com
-jjjj
-aaa
+mihailjovanoski14@gmail.com,mjcar,Mihail01
+aaaa@gmail.com,jjjj,aaa

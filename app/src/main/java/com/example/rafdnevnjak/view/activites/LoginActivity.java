@@ -95,9 +95,10 @@ public class LoginActivity extends AppCompatActivity {
                 String line;
 
                 while ((line = reader.readLine()) != null){
-                    String emailGuessed = line;
-                    String usernameGuessed = reader.readLine();
-                    String passwordGuessed = reader.readLine();
+                    String[] split = line.split(",");
+                    String emailGuessed = split[0];
+                    String usernameGuessed = split[1];
+                    String passwordGuessed = split[2];
 //                    System.out.println(email+" "+username+" "+password);
 //                    System.out.println(emailGuessed+" "+usernameGuessed+" "+passwordGuessed);
 //                    System.out.println("--------------");
