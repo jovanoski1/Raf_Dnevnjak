@@ -6,7 +6,10 @@ import androidx.core.splashscreen.SplashScreen;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -14,9 +17,13 @@ import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.view.activites.MainActivity;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
@@ -54,7 +61,36 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.loginBtn);
 
+        try {
+            boolean mboolean = false;
+            SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
+            mboolean = settings.getBoolean("FIRST_RUN", false);
+            if(!mboolean){
+                settings = getSharedPreferences("PREFS_NAME", 0);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean("FIRST_RUN", true);
+                editor.apply();
+
+                copyUserDbToDevice();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         initListeners();
+    }
+
+    private void copyUserDbToDevice() throws IOException {
+        System.out.println("COPPY");
+        InputStream inputStream = getAssets().open("user_db.txt");
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("user_db.txt",MODE_PRIVATE));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            outputStreamWriter.write(line);
+            outputStreamWriter.write("\n");
+        }
+        outputStreamWriter.close();
     }
 
     private void initListeners(){
@@ -89,19 +125,17 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             try {
-                InputStream inputStream = getAssets().open("user_db.txt");
-
+                InputStream inputStream = openFileInput("user_db.txt");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                 String line;
-
+                System.out.println("FILE user_db.txt");
                 while ((line = reader.readLine()) != null){
+                    System.out.println(line);
                     String[] split = line.split(",");
                     String emailGuessed = split[0];
                     String usernameGuessed = split[1];
                     String passwordGuessed = split[2];
-//                    System.out.println(email+" "+username+" "+password);
-//                    System.out.println(emailGuessed+" "+usernameGuessed+" "+passwordGuessed);
-//                    System.out.println("--------------");
+
                     if(email.equals(emailGuessed) && username.equals(usernameGuessed) && password.equals(passwordGuessed)){
                         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
