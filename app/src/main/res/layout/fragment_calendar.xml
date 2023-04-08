@@ -1,13 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center|top"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/currentDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calendar Fragment"/>
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-</LinearLayout>
+    <GridLayout
+        android:id="@+id/calendarHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:columnCount="7"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentDateTV">
+
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Mon"/>
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Tue"/>
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Wed"/>
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Thu"/>
+
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Fri"/>
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Sat"/>
+        <TextView
+            android:textSize="16sp"
+            android:layout_row="0"
+            android:layout_columnWeight="1"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:text="Sun"/>
+
+
+    </GridLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarHeader"
+        android:layout_marginTop="2sp"
+
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintVertical_bias="1.0"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
