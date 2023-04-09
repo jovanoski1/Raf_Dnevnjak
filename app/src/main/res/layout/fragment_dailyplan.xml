@@ -2,13 +2,88 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:gravity="center"
+    android:gravity="top|center"
     android:orientation="vertical"
     >
     <TextView
-        android:id="@+id/prokic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="@color/main_blue"
+        android:id="@+id/selected_date"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:gravity="center"
         android:text="DailyPlan Fragment"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:orientation="horizontal"
+        android:background="@drawable/layout_border">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="22sp"
+            android:textColor="@color/black"
+            android:text="Show past obligations"
+            android:gravity="center|start"
+            android:paddingStart="10sp"
+            android:layout_weight="8"
+            />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:drawableStart="@drawable/search_icon"
+        android:textSize="20sp"
+        android:layout_gravity="center|start"
+        android:layout_marginTop="10sp"
+        android:padding="20sp"
+        android:layout_marginLeft="5sp"
+        android:layout_marginRight="5sp"
+        android:drawablePadding="15sp"
+        android:background="@drawable/round_blue_border"
+        android:hint="Search"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5sp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Low"
+            android:layout_weight="1"
+            android:background="@drawable/priority_button_low_border"
+            android:textColor="@color/black"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Mid"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:background="@drawable/priority_button_mid"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="High"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:background="@drawable/priority_button_high"/>
+
+    </LinearLayout>
 
 </LinearLayout>
