@@ -12,23 +12,29 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.view.recycler.adapter.DateAdapter;
 import com.example.rafdnevnjak.view.recycler.differ.MyDateDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
+import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CalendarFragment extends Fragment {
 
     private CalendarViewModel calendarViewModel;
+    private MyDateSelectedViewModel myDateSelectedViewModel;
 
     private RecyclerView recyclerView;
     private DateAdapter dateAdapter;
     private TextView monthTextView;
+    private BottomNavigationView bottomNavigationView;
 
     public CalendarFragment(){super(R.layout.fragment_calendar);}
 
@@ -37,6 +43,7 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         System.out.println("USAO CALENDAR FRAGMENT");
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
+        myDateSelectedViewModel = new ViewModelProvider(requireActivity()).get(MyDateSelectedViewModel.class);
 
         initView(view);
         initObservers();
@@ -47,6 +54,7 @@ public class CalendarFragment extends Fragment {
     private void initView(View view){
         recyclerView = view.findViewById(R.id.listRV);
         monthTextView = view.findViewById(R.id.currentDateTV);
+        bottomNavigationView = Objects.requireNonNull(getActivity()).findViewById(R.id.bottomNavigation);
     }
 
     private void initListener(){
@@ -87,6 +95,8 @@ public class CalendarFragment extends Fragment {
 
     private void initRecycler(){
         dateAdapter = new DateAdapter(new MyDateDiffItemCallback(), date->{
+            myDateSelectedViewModel.getDate().setValue(date);
+            bottomNavigationView.setSelectedItemId(R.id.navigation_2);
             Toast.makeText(getContext(), date.getDate().getDayOfMonth()+" "+date.getDate().getMonthValue(), Toast.LENGTH_SHORT).show();
         });
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 7));
