@@ -60,7 +60,7 @@ public class DateAdapter extends ListAdapter<MyDate, DateAdapter.ViewHolder> {
 
 
         public void bind(MyDate myDate){
-            System.out.println(myDate.getDate().getDayOfMonth());
+            //System.out.println(myDate.getDate().getDayOfMonth());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd");
             ((TextView)itemView.findViewById(R.id.dateTV)).setText(dtf.format(myDate.getDate())+".");
         }

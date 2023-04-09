@@ -3,10 +3,13 @@ package com.example.rafdnevnjak.view.activites;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.splashscreen.SplashScreen;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -14,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.rafdnevnjak.R;
+import com.example.rafdnevnjak.db.DataBaseHelper;
+import com.example.rafdnevnjak.db.UserContract;
 import com.example.rafdnevnjak.view.activites.MainActivity;
 
 import java.io.BufferedReader;
@@ -61,20 +66,27 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.loginBtn);
 
-        try {
-            boolean mboolean = false;
-            SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
-            mboolean = settings.getBoolean("FIRST_RUN", false);
-            if(!mboolean){
-                settings = getSharedPreferences("PREFS_NAME", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean("FIRST_RUN", true);
-                editor.apply();
+        boolean mboolean = false;
+        SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
+        mboolean = settings.getBoolean("FIRST_RUN", false);
+        if(!mboolean){
+            settings = getSharedPreferences("PREFS_NAME", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FIRST_RUN", true);
+            editor.apply();
 
-                copyUserDbToDevice();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            DataBaseHelper dbHelper = new DataBaseHelper(this);
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put("email", "mihailjovanoski14@gmail.com");
+            values.put("username", "mjcar");
+            values.put("password", "Mihail01");
+            long id = db.insert("users", null, values);
+            System.out.println("Napravio tabelu");
+            db.close();
+
+            // copyUserDbToDevice();
         }
 
         initListeners();
@@ -124,32 +136,62 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            try {
-                InputStream inputStream = openFileInput("user_db.txt");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                System.out.println("FILE user_db.txt");
-                while ((line = reader.readLine()) != null){
-                    System.out.println(line);
-                    String[] split = line.split(",");
-                    String emailGuessed = split[0];
-                    String usernameGuessed = split[1];
-                    String passwordGuessed = split[2];
+            DataBaseHelper dbHelper = new DataBaseHelper(this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-                    if(email.equals(emailGuessed) && username.equals(usernameGuessed) && password.equals(passwordGuessed)){
-                        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("email", email);
-                        editor.putString("username", username);
-                        editor.putString("password", password);
-                        editor.apply();
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                    }
+            String[] projection = { UserContract.UserEntry.COLUMN_EMAIL, UserContract.UserEntry.COLUMN_USERNAME, UserContract.UserEntry.COLUMN_PASSWORD};
+
+
+            Cursor cursor = db.query(UserContract.UserEntry.TABLE_NAME,  projection, null, null, null, null, null);
+            System.out.println(cursor.getCount() + "prokic");
+            while (cursor.moveToNext()) {
+                //long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+                String emailDB = cursor.getString(cursor.getColumnIndexOrThrow("email"));
+                String usernameDB = cursor.getString(cursor.getColumnIndexOrThrow("username"));
+                String passwordDB = cursor.getString(cursor.getColumnIndexOrThrow("password"));
+                //System.out.println("DB : " + ", "+ email + ", "+ username + ", "+ password);
+                // Do something with the data
+                if(email.equals(emailDB) && username.equals(usernameDB) && password.equals(passwordDB)){
+                    SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("email", email);
+                    editor.putString("username", username);
+                    editor.putString("password", password);
+                    editor.apply();
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
                 }
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
             }
+
+            cursor.close();
+            db.close();
+
+//            try {
+//                InputStream inputStream = openFileInput("user_db.txt");
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//                String line;
+//                System.out.println("FILE user_db.txt");
+//                while ((line = reader.readLine()) != null){
+//                    System.out.println(line);
+//                    String[] split = line.split(",");
+//                    String emailGuessed = split[0];
+//                    String usernameGuessed = split[1];
+//                    String passwordGuessed = split[2];
+//
+//                    if(email.equals(emailGuessed) && username.equals(usernameGuessed) && password.equals(passwordGuessed)){
+//                        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sharedPreferences.edit();
+//                        editor.putString("email", email);
+//                        editor.putString("username", username);
+//                        editor.putString("password", password);
+//                        editor.apply();
+//                        Intent intent = new Intent(this, MainActivity.class);
+//                        startActivity(intent);
+//                    }
+//                }
+//            } catch (IOException ex) {
+//                throw new RuntimeException(ex);
+//            }
         });
     }
 

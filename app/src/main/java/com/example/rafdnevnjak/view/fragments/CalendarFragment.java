@@ -35,7 +35,7 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        System.out.println("USAO CALENDAR FRAGMENT");
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
 
         initView(view);
@@ -74,7 +74,7 @@ public class CalendarFragment extends Fragment {
                 }
 
                 monthTextView.setText(LocalDate.of(2022,ind,1).getMonth()+"");
-                System.out.println("Month :"+ LocalDate.of(2022,ind,1).getMonth());
+                //System.out.println("Month :"+ LocalDate.of(2022,ind,1).getMonth());
             }
         });
     }

@@ -1,8 +1,10 @@
 package com.example.rafdnevnjak.view.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.rafdnevnjak.R;
+import com.example.rafdnevnjak.db.DataBaseHelper;
+import com.example.rafdnevnjak.db.UserContract;
 import com.example.rafdnevnjak.view.activites.LoginActivity;
 import com.example.rafdnevnjak.view.activites.MainActivity;
 
@@ -39,7 +43,7 @@ public class ProfileFragment extends Fragment {
 
     private boolean changePasswordBtnClick = false;
     private SharedPreferences sharedPreferences;
-    private String userDbContent;
+    //private String userDbContent;
 
 
     public ProfileFragment(){
@@ -49,10 +53,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        System.out.println("USAO PROFILE FRAGMENT");
         init(view);
         initListeners();
-        userDbContent = readFile();
+        //userDbContent = readFile();
     }
     private void init(View view){
         emailTextView = view.findViewById(R.id.editTextProfileEmail);
@@ -85,19 +89,31 @@ public class ProfileFragment extends Fragment {
                 String oldPassword = sharedPreferences.getString("password", null);
                 if(password1.equals(password2) && !password1.isEmpty() && !password1.equals(oldPassword) && checkPassword(password1)){
                     sharedPreferences.edit().putString("password", password1).apply();
-                    try {
-                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getContext().openFileOutput("user_db.txt", Context.MODE_PRIVATE));
-                        userDbContent = userDbContent.replace(oldPassword, password1);
-                        //outputStreamWriter.append("aaaaaaaaa");
-                        outputStreamWriter.append(userDbContent);
-                        outputStreamWriter.close();
-                        System.out.println("USAO CHANGE");
+                    //                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(getContext().openFileOutput("user_db.txt", Context.MODE_PRIVATE));
+//                        userDbContent = userDbContent.replace(oldPassword, password1);
+//                        //outputStreamWriter.append("aaaaaaaaa");
+//                        outputStreamWriter.append(userDbContent);
+//                        outputStreamWriter.close();
+                    System.out.println("USAO CHANGE");
 
-                        Toast.makeText(getContext(), "Password changed", Toast.LENGTH_SHORT).show();
+                    DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+                    SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    ContentValues values = new ContentValues();
+                    values.put(UserContract.UserEntry.COLUMN_PASSWORD, password1);
+
+                    String selection = "email = ?";
+                    String[] selectionArgs = {sharedPreferences.getString("email", null)};
+
+                    int count = db.update(UserContract.UserEntry.TABLE_NAME, values, selection, selectionArgs);
+
+                    db.close();
+
+                    passwordET.setVisibility(View.GONE);
+                    passwordConfirmET.setVisibility(View.GONE);
+
+                    Toast.makeText(getContext(), "Password changed", Toast.LENGTH_SHORT).show();
+
                 }
             }
 
