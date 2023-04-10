@@ -1,6 +1,10 @@
 package com.example.rafdnevnjak.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -15,6 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.rafdnevnjak.R;
+import com.example.rafdnevnjak.db.DataBaseHelper;
+import com.example.rafdnevnjak.model.Duty;
+import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.view.recycler.adapter.DateAdapter;
 import com.example.rafdnevnjak.view.recycler.differ.MyDateDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
@@ -22,6 +29,7 @@ import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +50,7 @@ public class CalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         System.out.println("USAO CALENDAR FRAGMENT");
+
         calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
         myDateSelectedViewModel = new ViewModelProvider(requireActivity()).get(MyDateSelectedViewModel.class);
 
@@ -49,6 +58,41 @@ public class CalendarFragment extends Fragment {
         initObservers();
         initRecycler();
         initListener();
+        readObligationsFromDB();
+    }
+
+    private void readObligationsFromDB(){
+        DataBaseHelper dbHelper = new DataBaseHelper(getContext());
+        SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE);
+
+        int userId = (int) sharedPreferences.getLong("id", 0L);
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] columns = {"_id", "start_time", "end_time", "title", "description", "priority"};
+        String selection = "userId = ?";
+        String[] selectionArgs = {String.valueOf(userId)};
+
+        Cursor cursor = db.query("obligations", columns, selection, selectionArgs, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                Duty obligation = new Duty();
+                obligation.setStartTime(LocalTime.parse(cursor.getString(1).substring(11)));
+                obligation.setEndTime(LocalTime.parse(cursor.getString(2).substring(11)));
+                obligation.setTitle(cursor.getString(3));
+                obligation.setDescription(cursor.getString(4));
+                obligation.setPriority(cursor.getInt(5));
+
+                //System.out.println(obligation.getTitle() + "start: "+ obligation.getStartTime()+ " end: "+obligation.getEndTime());
+                LocalDate ld = LocalDate.parse(cursor.getString(1).substring(0,10));
+                System.out.println(obligation.getPriority());
+                calendarViewModel.addObligation(obligation, ld);
+
+                //System.out.println("Date :" + ld.getMonth() + " " +ld.getDayOfMonth());
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
     }
 
     private void initView(View view){

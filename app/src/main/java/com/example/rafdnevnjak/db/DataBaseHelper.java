@@ -20,11 +20,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 UserContract.UserEntry.COLUMN_PASSWORD + " TEXT NOT NULL)";
 
         sqLiteDatabase.execSQL(CREATE_USER_TABLE);
+
+
+        String CREATE_OBLIGATION_TABLE = "CREATE TABLE " + ObligationContract.ObligationEntry.TABLE_NAME + "( " +
+                ObligationContract.ObligationEntry._ID +" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                ObligationContract.ObligationEntry.COLUMN_STARTTIME +" DATETIME NOT NULL, " +
+                ObligationContract.ObligationEntry.COLUMN_ENDTIME +" DATETIME NOT NULL, " +
+                ObligationContract.ObligationEntry.COLUMN_TITLE+ " TEXT NOT NULL, " +
+                ObligationContract.ObligationEntry.COLUMN_DESC + " TEXT NOT NULL, " +
+                ObligationContract.ObligationEntry.COLUMN_PRIORITY + " INTEGER NOT NULL, " +
+                ObligationContract.ObligationEntry.COLUMN_USERID +  " INTEGER, " +
+                "FOREIGN KEY (userId) REFERENCES users(id)" +
+                ")";
+
+        sqLiteDatabase.execSQL(CREATE_OBLIGATION_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ UserContract.UserEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS "+ ObligationContract.ObligationEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

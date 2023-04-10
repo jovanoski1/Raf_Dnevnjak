@@ -10,15 +10,10 @@ public class MyDate {
     private List<Duty> dutyList = new ArrayList<>();
     private DutyPriority highestPriority;
 
-    private String proba;
 
-    public String getProba() {
-        return proba;
-    }
 
     public MyDate(LocalDate date) {
         this.date = date;
-        this.proba = "Proba " + date.getDayOfYear();
     }
 
     public LocalDate getDate() {

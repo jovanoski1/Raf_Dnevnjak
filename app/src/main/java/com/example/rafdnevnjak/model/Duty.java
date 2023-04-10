@@ -19,6 +19,10 @@ public class Duty {
         this.priority = priority;
     }
 
+    public Duty() {
+
+    }
+
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -55,7 +59,9 @@ public class Duty {
         return priority;
     }
 
-    public void setPriority(DutyPriority priority) {
-        this.priority = priority;
+    public void setPriority(int priority) {
+        if (priority==1)this.priority = DutyPriority.LOW;
+        else if(priority==2) this.priority =DutyPriority.MID;
+        else this.priority = DutyPriority.HIGH;
     }
 }

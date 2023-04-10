@@ -19,6 +19,7 @@ import android.widget.EditText;
 import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.db.DataBaseHelper;
 import com.example.rafdnevnjak.db.UserContract;
+import com.example.rafdnevnjak.utils.Utils;
 import com.example.rafdnevnjak.view.activites.MainActivity;
 
 import java.io.BufferedReader;
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             if(s!=null){
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
             return false;
 
@@ -84,6 +86,10 @@ public class LoginActivity extends AppCompatActivity {
             values.put("password", "Mihail01");
             long id = db.insert("users", null, values);
             System.out.println("Napravio tabelu");
+
+            Utils.addObligation("2023-04-08 14:30:00","2023-04-08 15:30:00", "Algebra", "Predavanje",
+                    2,1,this);
+
             db.close();
 
             // copyUserDbToDevice();
@@ -139,21 +145,22 @@ public class LoginActivity extends AppCompatActivity {
             DataBaseHelper dbHelper = new DataBaseHelper(this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-            String[] projection = { UserContract.UserEntry.COLUMN_EMAIL, UserContract.UserEntry.COLUMN_USERNAME, UserContract.UserEntry.COLUMN_PASSWORD};
+            String[] projection = {UserContract.UserEntry._ID,UserContract.UserEntry.COLUMN_EMAIL, UserContract.UserEntry.COLUMN_USERNAME, UserContract.UserEntry.COLUMN_PASSWORD};
 
 
             Cursor cursor = db.query(UserContract.UserEntry.TABLE_NAME,  projection, null, null, null, null, null);
             System.out.println(cursor.getCount() + "prokic");
             while (cursor.moveToNext()) {
-                //long userId = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+                long userId = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
                 String emailDB = cursor.getString(cursor.getColumnIndexOrThrow("email"));
                 String usernameDB = cursor.getString(cursor.getColumnIndexOrThrow("username"));
                 String passwordDB = cursor.getString(cursor.getColumnIndexOrThrow("password"));
-                //System.out.println("DB : " + ", "+ email + ", "+ username + ", "+ password);
+                System.out.println("DB : " + ", "+ userId + ", "+ username + ", "+ password);
                 // Do something with the data
                 if(email.equals(emailDB) && username.equals(usernameDB) && password.equals(passwordDB)){
                     SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putLong("id", userId);
                     editor.putString("email", email);
                     editor.putString("username", username);
                     editor.putString("password", password);

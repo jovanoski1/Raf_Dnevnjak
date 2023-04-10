@@ -41,6 +41,7 @@ public class DailyPlanFragment extends Fragment {
         myDateSelectedViewModel.getDate().observe(getViewLifecycleOwner(), e->{
             System.out.println("Selektovan "+e.getDate());
             String month = e.getDate().getMonth().toString();
+            System.out.println(e.getDutyList().get(0).getTitle());
             dateTV.setText(month.substring(0,1).toUpperCase()+month.substring(1).toLowerCase() + " "+ e.getDate().getDayOfMonth()+". "+e.getDate().getYear()+".");
         });
     }
