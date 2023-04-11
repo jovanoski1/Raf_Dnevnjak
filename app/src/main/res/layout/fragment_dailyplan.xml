@@ -61,6 +61,7 @@
         android:layout_marginTop="5sp">
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/filterLowPriorityBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Low"
@@ -69,6 +70,7 @@
             android:textColor="@color/black"/>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/filterMidPriorityBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Mid"
@@ -77,6 +79,7 @@
             android:background="@drawable/priority_button_mid"/>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/filterHighPriorityBtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="High"
@@ -89,7 +92,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/obligationRv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         />
 
 </LinearLayout>

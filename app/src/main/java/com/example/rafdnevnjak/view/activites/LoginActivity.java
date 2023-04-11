@@ -90,6 +90,9 @@ public class LoginActivity extends AppCompatActivity {
             Utils.addObligation("2023-04-08 14:30:00","2023-04-08 15:30:00", "Algebra", "Predavanje",
                     2,1,this);
 
+            Utils.addObligation("2023-04-08 16:30:00","2023-04-08 18:30:00", "Nutanix sastanak", "Za praksu razgovor",
+                    3,1,this);
+
             db.close();
 
             // copyUserDbToDevice();
