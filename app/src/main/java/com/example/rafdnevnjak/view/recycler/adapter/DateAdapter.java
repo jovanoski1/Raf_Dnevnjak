@@ -52,8 +52,8 @@ public class DateAdapter extends ListAdapter<MyDate, DateAdapter.ViewHolder> {
             super(itemView);
             this.context = context;
             itemView.setOnClickListener(v->{
-                if(getAdapterPosition() != RecyclerView.NO_POSITION){
-                    onItemClicked.accept(getAdapterPosition());
+                if(getBindingAdapterPosition() != RecyclerView.NO_POSITION){
+                    onItemClicked.accept(getBindingAdapterPosition());
                 }
             });
         }
