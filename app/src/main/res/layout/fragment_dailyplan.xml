@@ -33,6 +33,7 @@
             />
 
         <CheckBox
+            android:id="@+id/pastObligationsCb"
             android:checked="true"
             android:layout_width="wrap_content"
             android:scaleX="2"

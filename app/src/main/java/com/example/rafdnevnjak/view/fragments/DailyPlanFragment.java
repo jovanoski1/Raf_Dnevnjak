@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +26,8 @@ import com.example.rafdnevnjak.view.recycler.adapter.ObligationAdapter;
 import com.example.rafdnevnjak.view.recycler.differ.ObligationDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.stream.Collectors;
 
 public class DailyPlanFragment extends Fragment {
@@ -43,6 +47,8 @@ public class DailyPlanFragment extends Fragment {
     private int highPriorityBtnClickCnt;
 
     private EditText filterByTitleEt;
+
+    private CheckBox pastObligationsCb;
 
 
     public DailyPlanFragment(){super(R.layout.fragment_dailyplan);}
@@ -66,6 +72,7 @@ public class DailyPlanFragment extends Fragment {
         lowPriorityBtnClickCnt=0;
 
         filterByTitleEt = view.findViewById(R.id.filerByTitleEt);
+        pastObligationsCb = view.findViewById(R.id.pastObligationsCb);
 
         initRecycler();
         initObservers(view);
@@ -121,6 +128,19 @@ public class DailyPlanFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable editable) {
                 obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList().stream().filter(duty -> duty.getTitle().startsWith(editable.toString())).collect(Collectors.toList()));
+            }
+        });
+
+        pastObligationsCb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList());
+                }
+                else{
+                    obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList().stream().filter(duty -> duty.getDate().isAfter(LocalDate.now()) || (duty.getDate().isEqual(LocalDate.now())&& duty.getStartTime().isAfter(LocalTime.now()))).collect(Collectors.toList()));
+
+                }
             }
         });
     }

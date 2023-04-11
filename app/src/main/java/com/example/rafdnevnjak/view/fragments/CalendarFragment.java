@@ -114,7 +114,7 @@ public class CalendarFragment extends Fragment {
 
                 int[] niz = new int[13];
                 for(int i=start;i<=end;i++){
-                    LocalDate ld = LocalDate.of(2023,4,1).plusDays(i);
+                    LocalDate ld = LocalDate.of(2022,12,26).plusDays(i);
                     niz[ld.getMonthValue()]++;
                 }
                 int maxi = -1;
@@ -126,7 +126,7 @@ public class CalendarFragment extends Fragment {
                     }
                 }
 
-                monthTextView.setText(LocalDate.of(2022,ind,1).getMonth()+"");
+                monthTextView.setText(LocalDate.of(2022,ind,1).getMonth()+" "+LocalDate.of(2022,12,26).plusDays((start+end)/2).getYear());
                 //System.out.println("Month :"+ LocalDate.of(2022,ind,1).getMonth());
             }
         });

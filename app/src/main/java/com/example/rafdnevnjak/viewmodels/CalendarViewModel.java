@@ -16,7 +16,7 @@ public class CalendarViewModel extends ViewModel {
 
     private List<MyDate> dateList = new ArrayList<>();
     public CalendarViewModel(){
-        LocalDate ld = LocalDate.of(2023,4,1);
+        LocalDate ld = LocalDate.of(2022,12,26);
         for(int i=0;i<1000;i++){
             MyDate myDate = new MyDate(ld.plusDays(i));
             dateList.add(myDate);
