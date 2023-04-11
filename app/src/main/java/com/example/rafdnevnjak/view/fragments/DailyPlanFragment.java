@@ -1,7 +1,9 @@
 package com.example.rafdnevnjak.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -25,6 +27,7 @@ import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.model.MyDate;
 import com.example.rafdnevnjak.utils.Utils;
+import com.example.rafdnevnjak.view.activites.DetailsActivity;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationAdapter;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationItemClickListener;
 import com.example.rafdnevnjak.view.recycler.differ.ObligationDiffItemCallback;
@@ -34,6 +37,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class DailyPlanFragment extends Fragment {
@@ -110,6 +114,11 @@ public class DailyPlanFragment extends Fragment {
             @Override
             public void onItemClick(Duty duty) {
                 System.out.println("Kliknuo na ceo obligation za detalje!");
+                Intent intent = new Intent(getActivity(), DetailsActivity.class);
+                ArrayList<Duty> duties = (ArrayList<Duty>) myDateSelectedViewModel.getDate().getValue().getDutyList();
+                intent.putExtra("obligations", duties);
+                intent.putExtra("currentItem", duties.indexOf(duty));
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(obligationAdapter);

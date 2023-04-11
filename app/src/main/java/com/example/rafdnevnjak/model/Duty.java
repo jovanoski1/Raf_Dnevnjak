@@ -1,9 +1,10 @@
 package com.example.rafdnevnjak.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Duty {
+public class Duty implements Serializable {
 
     private Long id;
 
