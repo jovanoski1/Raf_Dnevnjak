@@ -10,10 +10,18 @@ public class MyDate {
     private List<Duty> dutyList = new ArrayList<>();
     private DutyPriority highestPriority;
 
-
+    public void updateHighestPriority(){
+        DutyPriority dd=DutyPriority.NO;
+        for(Duty d:dutyList){
+            if(dd==null) dd = d.getPriority();
+            else if(d.getPriority().ordinal() > dd.ordinal()) dd = d.getPriority();
+        }
+        highestPriority = dd;
+    }
 
     public MyDate(LocalDate date) {
         this.date = date;
+        highestPriority = DutyPriority.NO;
     }
 
     public LocalDate getDate() {

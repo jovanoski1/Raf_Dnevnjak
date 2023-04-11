@@ -23,9 +23,11 @@ import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.model.MyDate;
+import com.example.rafdnevnjak.utils.Utils;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationAdapter;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationItemClickListener;
 import com.example.rafdnevnjak.view.recycler.differ.ObligationDiffItemCallback;
+import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
 import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
 
 import java.time.LocalDate;
@@ -35,6 +37,7 @@ import java.util.stream.Collectors;
 public class DailyPlanFragment extends Fragment {
 
     private MyDateSelectedViewModel myDateSelectedViewModel;
+    private CalendarViewModel calendarViewModel;
     private TextView dateTV;
     private RecyclerView recyclerView;
     private ObligationAdapter obligationAdapter;
@@ -64,6 +67,7 @@ public class DailyPlanFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         myDateSelectedViewModel = new ViewModelProvider(requireActivity()).get(MyDateSelectedViewModel.class);
+        calendarViewModel = new ViewModelProvider(requireActivity()).get(CalendarViewModel.class);
         dateTV = view.findViewById(R.id.selected_date);
         recyclerView = view.findViewById(R.id.obligationRv);
         lowPriorityBtn = view.findViewById(R.id.filterLowPriorityBtn);
@@ -94,6 +98,9 @@ public class DailyPlanFragment extends Fragment {
             @Override
             public void onDeleteClick(Duty duty) {
                 System.out.println("CLICK DELETE : " + duty.getTitle());
+                Utils.deleteObligationById(duty.getId(), getContext());
+                myDateSelectedViewModel.deleteObligation(duty);
+                calendarViewModel.removeObligation(duty);
 
             }
         });

@@ -67,11 +67,14 @@ public class DateAdapter extends ListAdapter<MyDate, DateAdapter.ViewHolder> {
             //System.out.println(myDate.getDate().getDayOfMonth());
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd");
             ((TextView)itemView.findViewById(R.id.dateTV)).setText(dtf.format(myDate.getDate())+".");
+            ((RelativeLayout)itemView.findViewById(R.id.colorDayLayout)).setBackgroundColor(Color.parseColor("#FFFFFF"));
+
             if(myDate.getHighestPriority()!=null && myDate.getHighestPriority().equals(DutyPriority.LOW))
                 ((RelativeLayout)itemView.findViewById(R.id.colorDayLayout)).setBackgroundColor(Color.parseColor("#57CC99"));
             else if(myDate.getHighestPriority()!=null && myDate.getHighestPriority().equals(DutyPriority.MID))
                 ((RelativeLayout)itemView.findViewById(R.id.colorDayLayout)).setBackgroundColor(Color.parseColor("#F7CD35"));
-            else if (myDate.getHighestPriority()!=null )((RelativeLayout)itemView.findViewById(R.id.colorDayLayout)).setBackgroundColor(Color.parseColor("#F58A51"));
+            else if (myDate.getHighestPriority()!=null && myDate.getHighestPriority().equals(DutyPriority.HIGH))
+                ((RelativeLayout)itemView.findViewById(R.id.colorDayLayout)).setBackgroundColor(Color.parseColor("#F58A51"));
         }
     }
 }

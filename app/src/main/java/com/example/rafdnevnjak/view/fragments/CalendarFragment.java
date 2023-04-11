@@ -22,6 +22,7 @@ import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.db.DataBaseHelper;
 import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.model.DutyPriority;
+import com.example.rafdnevnjak.model.MyDate;
 import com.example.rafdnevnjak.view.recycler.adapter.DateAdapter;
 import com.example.rafdnevnjak.view.recycler.differ.MyDateDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
@@ -51,7 +52,7 @@ public class CalendarFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         System.out.println("USAO CALENDAR FRAGMENT");
 
-        calendarViewModel = new ViewModelProvider(this).get(CalendarViewModel.class);
+        calendarViewModel = new ViewModelProvider(requireActivity()).get(CalendarViewModel.class);
         myDateSelectedViewModel = new ViewModelProvider(requireActivity()).get(MyDateSelectedViewModel.class);
 
         initView(view);
@@ -135,6 +136,7 @@ public class CalendarFragment extends Fragment {
     private void initObservers(){
         calendarViewModel.getDates().observe(getViewLifecycleOwner(), dates ->{
             dateAdapter.submitList(dates);
+            dateAdapter.notifyDataSetChanged();
         });
     }
 

@@ -9,6 +9,7 @@ import com.example.rafdnevnjak.model.MyDate;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CalendarViewModel extends ViewModel {
 
@@ -33,6 +34,20 @@ public class CalendarViewModel extends ViewModel {
                 myDate.getDutyList().add(duty);
                 if (myDate.getHighestPriority() == null) myDate.setHighestPriority(duty.getPriority());
                 else if(duty.getPriority().ordinal() > myDate.getHighestPriority().ordinal()) myDate.setHighestPriority(duty.getPriority());
+                break;
+            }
+        }
+        List<MyDate> listToSubmit = new ArrayList<>(dateList);
+        dates.setValue(listToSubmit);
+    }
+
+    public void removeObligation(Duty duty){
+        for(MyDate d:dateList){
+            if(d.getDate().equals(duty.getDate())){
+                List<Duty> dd = new ArrayList<>(d.getDutyList());
+                dd.remove(duty);
+                d.setDutyList(dd);
+                d.updateHighestPriority();
                 break;
             }
         }

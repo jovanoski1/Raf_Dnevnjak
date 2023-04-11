@@ -29,4 +29,12 @@ public class Utils {
             Log.d("Database", "Obligation inserted successfully");
         }
     }
+
+    public static void deleteObligationById(Long id, Context context) {
+        DataBaseHelper dbHelper = new DataBaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete("obligations", "_id=?", new String[] {String.valueOf(id)});
+        db.close();
+    }
+
 }
