@@ -79,6 +79,12 @@ public class ObligationAdapter extends ListAdapter<Duty, ObligationAdapter.Oblig
                     listener.onDeleteClick(duty);
                 }
             });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(duty);
+                }
+            });
         }
 
     }

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +30,7 @@ import com.example.rafdnevnjak.view.recycler.adapter.ObligationItemClickListener
 import com.example.rafdnevnjak.view.recycler.differ.ObligationDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
 import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -80,12 +82,12 @@ public class DailyPlanFragment extends Fragment {
         filterByTitleEt = view.findViewById(R.id.filerByTitleEt);
         pastObligationsCb = view.findViewById(R.id.pastObligationsCb);
 
-        initRecycler();
+        initRecycler(view);
         initObservers(view);
         initListeners();
     }
 
-    private void initRecycler(){
+    private void initRecycler(View view){
 //        obligationAdapter = new ObligationAdapter(new ObligationDiffItemCallback(), obligation ->{
 //            Toast.makeText(getContext(), obligation.getTitle(),Toast.LENGTH_SHORT).show();
 //        });
@@ -97,11 +99,17 @@ public class DailyPlanFragment extends Fragment {
 
             @Override
             public void onDeleteClick(Duty duty) {
-                System.out.println("CLICK DELETE : " + duty.getTitle());
-                Utils.deleteObligationById(duty.getId(), getContext());
-                myDateSelectedViewModel.deleteObligation(duty);
-                calendarViewModel.removeObligation(duty);
+                Snackbar.make(view,"Confirm deletition of "+duty.getTitle(), Snackbar.LENGTH_SHORT)
+                                .setAction("Confirm", view -> {
+                                    Utils.deleteObligationById(duty.getId(), getContext());
+                                    myDateSelectedViewModel.deleteObligation(duty);
+                                    calendarViewModel.removeObligation(duty);
+                                }).show();
+            }
 
+            @Override
+            public void onItemClick(Duty duty) {
+                System.out.println("Kliknuo na ceo kurac!");
             }
         });
         recyclerView.setAdapter(obligationAdapter);

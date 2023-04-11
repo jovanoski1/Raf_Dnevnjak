@@ -5,4 +5,6 @@ import com.example.rafdnevnjak.model.Duty;
 public interface ObligationItemClickListener {
     void onEditClick(Duty duty);
     void onDeleteClick(Duty duty);
+
+    void onItemClick(Duty duty);
 }
