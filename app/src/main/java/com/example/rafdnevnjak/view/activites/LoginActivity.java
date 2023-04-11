@@ -152,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
             Cursor cursor = db.query(UserContract.UserEntry.TABLE_NAME,  projection, null, null, null, null, null);
-            System.out.println(cursor.getCount() + "prokic");
+            //System.out.println(cursor.getCount() + "prokic");
             while (cursor.moveToNext()) {
                 long userId = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
                 String emailDB = cursor.getString(cursor.getColumnIndexOrThrow("email"));

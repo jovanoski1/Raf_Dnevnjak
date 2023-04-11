@@ -20,9 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rafdnevnjak.R;
+import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.model.MyDate;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationAdapter;
+import com.example.rafdnevnjak.view.recycler.adapter.ObligationItemClickListener;
 import com.example.rafdnevnjak.view.recycler.differ.ObligationDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
 
@@ -80,8 +82,20 @@ public class DailyPlanFragment extends Fragment {
     }
 
     private void initRecycler(){
-        obligationAdapter = new ObligationAdapter(new ObligationDiffItemCallback(), obligation ->{
-            Toast.makeText(getContext(), obligation.getTitle(),Toast.LENGTH_SHORT).show();
+//        obligationAdapter = new ObligationAdapter(new ObligationDiffItemCallback(), obligation ->{
+//            Toast.makeText(getContext(), obligation.getTitle(),Toast.LENGTH_SHORT).show();
+//        });
+        obligationAdapter = new ObligationAdapter(new ObligationDiffItemCallback(), new ObligationItemClickListener() {
+            @Override
+            public void onEditClick(Duty duty) {
+                System.out.println("CLICK EDIT : " + duty.getTitle());
+            }
+
+            @Override
+            public void onDeleteClick(Duty duty) {
+                System.out.println("CLICK DELETE : " + duty.getTitle());
+
+            }
         });
         recyclerView.setAdapter(obligationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

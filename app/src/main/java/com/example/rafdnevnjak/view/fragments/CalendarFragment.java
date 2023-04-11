@@ -77,6 +77,7 @@ public class CalendarFragment extends Fragment {
         if (cursor.moveToFirst()) {
             do {
                 Duty obligation = new Duty();
+                obligation.setId(cursor.getLong(0));
                 obligation.setStartTime(LocalTime.parse(cursor.getString(1).substring(11)));
                 obligation.setEndTime(LocalTime.parse(cursor.getString(2).substring(11)));
                 obligation.setTitle(cursor.getString(3));

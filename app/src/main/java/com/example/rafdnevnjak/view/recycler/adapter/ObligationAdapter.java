@@ -1,5 +1,6 @@
 package com.example.rafdnevnjak.view.recycler.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -21,48 +22,42 @@ import com.example.rafdnevnjak.model.DutyPriority;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.function.Consumer;
 
 public class ObligationAdapter extends ListAdapter<Duty, ObligationAdapter.ObligationViewHolder> {
 
-    private final Consumer<Duty> onDutyClicked;
+    private ObligationItemClickListener listener;
 
-    public ObligationAdapter(@NonNull DiffUtil.ItemCallback<Duty> diffCallback, Consumer<Duty> onDutyClicked) {
+    public ObligationAdapter(@NonNull DiffUtil.ItemCallback<Duty> diffCallback, ObligationItemClickListener listener) {
         super(diffCallback);
-        this.onDutyClicked = onDutyClicked;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public ObligationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.obligation_list_item, parent, false);
-        return new ObligationViewHolder(view, parent.getContext(), position ->{
-            Duty duty = getItem(position);
-            onDutyClicked.accept(duty);
-        });
+        return new ObligationViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ObligationViewHolder holder, int position) {
         Duty duty = getItem(position);
-        holder.bind(duty);
+        holder.bind(duty, listener);
     }
 
     public static class ObligationViewHolder extends RecyclerView.ViewHolder{
 
-        private final Context context;
+        private ImageView editIv;
+        private ImageView deleteIv;
 
-        public ObligationViewHolder(@NonNull View itemView, Context context, Consumer<Integer> onItemClicked) {
+        public ObligationViewHolder(View itemView){
             super(itemView);
-            this.context = context;
-            itemView.setOnClickListener(v->{
-                if(getBindingAdapterPosition() != RecyclerView.NO_POSITION){
-                    onItemClicked.accept(getBindingAdapterPosition());
-                }
-            });
+            editIv = itemView.findViewById(R.id.editIv);
+            deleteIv = itemView.findViewById(R.id.deleteIv);
+
         }
 
-        public void bind(Duty duty){
+        public void bind(Duty duty, final ObligationItemClickListener listener){
             if(duty.getPriority().equals(DutyPriority.LOW)) ((ImageView)itemView.findViewById(R.id.obligationPictureIv)).setBackgroundColor(Color.parseColor("#57CC99"));
             else if(duty.getPriority().equals(DutyPriority.MID)) ((ImageView)itemView.findViewById(R.id.obligationPictureIv)).setBackgroundColor(Color.parseColor("#F7CD35"));
             else ((ImageView)itemView.findViewById(R.id.obligationPictureIv)).setBackgroundColor(Color.parseColor("#F58A51"));
@@ -71,6 +66,20 @@ public class ObligationAdapter extends ListAdapter<Duty, ObligationAdapter.Oblig
                 ((ConstraintLayout)itemView.findViewById(R.id.obligationItem)).setBackgroundResource(R.drawable.layout_border_past_obligation);
             ((TextView)itemView.findViewById(R.id.obligationTitleTv)).setText(duty.getTitle());
             ((TextView)itemView.findViewById(R.id.timeStartEndTv)).setText(duty.getStartTime() +" - "+duty.getEndTime());
+
+            editIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onEditClick(duty);
+                }
+            });
+            deleteIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onDeleteClick(duty);
+                }
+            });
         }
+
     }
 }

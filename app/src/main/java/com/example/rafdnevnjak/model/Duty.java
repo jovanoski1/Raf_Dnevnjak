@@ -5,6 +5,16 @@ import java.time.LocalTime;
 
 public class Duty {
 
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private LocalTime startTime;
     private LocalTime endTime;
     private String title;
