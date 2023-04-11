@@ -1,5 +1,6 @@
 package com.example.rafdnevnjak.model;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Duty {
@@ -9,7 +10,19 @@ public class Duty {
     private String title;
     private String description;
     private DutyPriority priority;
+    private LocalDate date;
 
+    public void setPriority(DutyPriority priority) {
+        this.priority = priority;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
     public Duty(LocalTime startTime, LocalTime endTime, String title, String description, DutyPriority priority) {
         this.startTime = startTime;

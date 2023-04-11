@@ -82,6 +82,7 @@ public class CalendarFragment extends Fragment {
                 obligation.setTitle(cursor.getString(3));
                 obligation.setDescription(cursor.getString(4));
                 obligation.setPriority(cursor.getInt(5));
+                obligation.setDate(LocalDate.parse(cursor.getString(1).substring(0,10)));
 
                 //System.out.println(obligation.getTitle() + "start: "+ obligation.getStartTime()+ " end: "+obligation.getEndTime());
                 LocalDate ld = LocalDate.parse(cursor.getString(1).substring(0,10));

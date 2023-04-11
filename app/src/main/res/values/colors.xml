@@ -11,4 +11,5 @@
     <color name="low_priority">#57CC99</color>
     <color name="mid_priority">#F7CD35</color>
     <color name="high_priority">#F58A51</color>
+    <color name="past_obligation_grey">#989898</color>
 </resources>

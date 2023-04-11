@@ -2,7 +2,10 @@ package com.example.rafdnevnjak.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +42,8 @@ public class DailyPlanFragment extends Fragment {
     private AppCompatButton highPriorityBtn;
     private int highPriorityBtnClickCnt;
 
+    private EditText filterByTitleEt;
+
 
     public DailyPlanFragment(){super(R.layout.fragment_dailyplan);}
 
@@ -60,6 +65,8 @@ public class DailyPlanFragment extends Fragment {
         midPriorityBtnClickCnt=0;
         lowPriorityBtnClickCnt=0;
 
+        filterByTitleEt = view.findViewById(R.id.filerByTitleEt);
+
         initRecycler();
         initObservers(view);
         initListeners();
@@ -78,7 +85,6 @@ public class DailyPlanFragment extends Fragment {
         myDateSelectedViewModel.getDate().observe(getViewLifecycleOwner(), e->{
             System.out.println("Selektovan "+e.getDate());
             String month = e.getDate().getMonth().toString();
-            System.out.println(e.getDutyList().get(0).getTitle());
             obligationAdapter.submitList(e.getDutyList());
             dateTV.setText(month.substring(0,1).toUpperCase()+month.substring(1).toLowerCase() + " "+ e.getDate().getDayOfMonth()+". "+e.getDate().getYear()+".");
         });
@@ -99,6 +105,23 @@ public class DailyPlanFragment extends Fragment {
             if(highPriorityBtnClickCnt%2==0) obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList().stream().filter(duty ->  duty.getPriority().equals(DutyPriority.HIGH)).collect(Collectors.toList()));
             else obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList());
             highPriorityBtnClickCnt++;
+        });
+
+        filterByTitleEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList().stream().filter(duty -> duty.getTitle().startsWith(editable.toString())).collect(Collectors.toList()));
+            }
         });
     }
 }

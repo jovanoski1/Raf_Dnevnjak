@@ -87,10 +87,10 @@ public class LoginActivity extends AppCompatActivity {
             long id = db.insert("users", null, values);
             System.out.println("Napravio tabelu");
 
-            Utils.addObligation("2023-04-08 14:30:00","2023-04-08 15:30:00", "Algebra", "Predavanje",
+            Utils.addObligation("2023-04-11 10:30:00","2023-04-11 11:30:00", "Algebra", "Predavanje",
                     2,1,this);
 
-            Utils.addObligation("2023-04-08 16:30:00","2023-04-08 18:30:00", "Nutanix sastanak", "Za praksu razgovor",
+            Utils.addObligation("2023-04-11 12:00:00","2023-04-11 13:00:00", "Nutanix sastanak", "Za praksu razgovor",
                     3,1,this);
 
             db.close();
