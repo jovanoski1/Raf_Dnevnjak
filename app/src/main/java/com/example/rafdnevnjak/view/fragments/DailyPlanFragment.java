@@ -109,7 +109,7 @@ public class DailyPlanFragment extends Fragment {
 
             @Override
             public void onItemClick(Duty duty) {
-                System.out.println("Kliknuo na ceo kurac!");
+                System.out.println("Kliknuo na ceo obligation za detalje!");
             }
         });
         recyclerView.setAdapter(obligationAdapter);

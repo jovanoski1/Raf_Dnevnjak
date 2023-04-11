@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
             Utils.addObligation("2023-04-11 10:30:00","2023-04-11 11:30:00", "Algebra", "Predavanje",
                     2,1,this);
 
-            Utils.addObligation("2023-04-11 12:00:00","2023-04-11 13:00:00", "Nutanix sastanak", "Za praksu razgovor",
+            Utils.addObligation("2023-04-11 17:00:00","2023-04-11 18:00:00", "Nutanix sastanak", "Za praksu razgovor",
                     3,1,this);
 
             db.close();
