@@ -26,6 +26,7 @@
                 android:src="@drawable/clock"
                 android:layout_marginStart="16dp"/>
             <TextView
+                android:id="@+id/time_details_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="13:15 - 15:00"
@@ -50,8 +51,9 @@
             />
 
         <TextView
+            android:id="@+id/description_details_tv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="400dp"
             android:maxLines="30"
             android:lines="30"
             android:layout_margin="16dp"
@@ -62,5 +64,45 @@
             android:text="Groups and monoids"
             />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:showDividers="middle"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/edit_details_btn"
+                    android:layout_width="170dp"
+                    android:background="@drawable/layout_edit_button"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:text="Edit"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/delete_details_btn"
+                    android:layout_width="170dp"
+                    android:background="@drawable/layout_delete_button"
+                    android:layout_height="50dp"
+                    android:textSize="20dp"
+                    android:text="Delete"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
 </LinearLayout>

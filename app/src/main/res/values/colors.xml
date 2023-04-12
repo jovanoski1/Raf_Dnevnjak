@@ -13,4 +13,5 @@
     <color name="high_priority">#F58A51</color>
     <color name="past_obligation_grey">#989898</color>
     <color name="obligation_blue">#C5F6FA</color>
+    <color name="edit_green_border">#0C848F</color>
 </resources>
