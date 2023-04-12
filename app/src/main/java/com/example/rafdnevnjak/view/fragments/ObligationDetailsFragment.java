@@ -1,6 +1,7 @@
 package com.example.rafdnevnjak.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.model.Duty;
+import com.example.rafdnevnjak.utils.Utils;
+import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
+import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 public class ObligationDetailsFragment extends Fragment {
 
@@ -39,6 +44,21 @@ public class ObligationDetailsFragment extends Fragment {
         duty = ((Duty)args.getSerializable("object"));
         //System.out.println(((Duty)args.getSerializable("object")).getTitle());
 
+        initView(view);
+
+        deleteBtn.setOnClickListener(e->{
+            Snackbar.make(view,"Confirm deletition of "+duty.getTitle(), Snackbar.LENGTH_SHORT)
+                    .setAction("Confirm", d -> {
+                        Intent i = new Intent();
+                        i.putExtra("deleted", duty);
+                        getActivity().setResult(111, i);
+                        getActivity().finish();
+                    }).show();
+
+        });
+    }
+
+    private void initView(View view){
         titleTv = view.findViewById(R.id.detail_title);
         dateTv = view.findViewById(R.id.details_obligation_date);
         timeTv = view.findViewById(R.id.time_details_tv);

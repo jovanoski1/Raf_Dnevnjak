@@ -3,6 +3,7 @@ package com.example.rafdnevnjak.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Duty implements Serializable {
 
@@ -22,6 +23,19 @@ public class Duty implements Serializable {
     private String description;
     private DutyPriority priority;
     private LocalDate date;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Duty duty = (Duty) o;
+        return Objects.equals(id, duty.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     public void setPriority(DutyPriority priority) {
         this.priority = priority;

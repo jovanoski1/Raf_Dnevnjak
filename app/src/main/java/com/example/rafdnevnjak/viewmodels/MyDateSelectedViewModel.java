@@ -22,7 +22,7 @@ public class MyDateSelectedViewModel extends ViewModel {
         MyDate dateToSubmit = new MyDate(date.getValue().getDate());
         dateToSubmit.setHighestPriority(date.getValue().getHighestPriority());
         List<Duty> duties = new ArrayList<>(date.getValue().getDutyList());
-        Optional<Duty> dutyObject = duties.stream().filter(duty1 -> duty1.getId()== duty.getId()).findFirst();
+        Optional<Duty> dutyObject = duties.stream().filter(duty1 -> duty1.getId().equals(duty.getId())).findFirst();
         if(dutyObject.isPresent()){
             duties.remove(dutyObject.get());
             dateToSubmit.setDutyList(duties);

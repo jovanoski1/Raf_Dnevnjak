@@ -1,7 +1,11 @@
 package com.example.rafdnevnjak.view.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
@@ -23,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.rafdnevnjak.R;
+import com.example.rafdnevnjak.db.DataBaseHelper;
 import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.model.MyDate;
@@ -38,6 +43,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DailyPlanFragment extends Fragment {
@@ -118,13 +124,30 @@ public class DailyPlanFragment extends Fragment {
                 ArrayList<Duty> duties = (ArrayList<Duty>) myDateSelectedViewModel.getDate().getValue().getDutyList();
                 intent.putExtra("obligations", duties);
                 intent.putExtra("currentItem", duties.indexOf(duty));
-                startActivity(intent);
+                startActivityForResult(intent,111);
             }
         });
         recyclerView.setAdapter(obligationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("USAO ON RESULT DAILY FRAGMENT");
+
+        Duty deleted = (Duty) data.getSerializableExtra("deleted");
+
+        if (deleted==null)return;
+        System.out.println("-------------");
+        System.out.println(myDateSelectedViewModel.getDate().getValue().getDutyList());
+        System.out.println(deleted);
+        System.out.println(deleted.getTitle() + " " +deleted.getId());
+
+        Utils.deleteObligationById(deleted.getId(), getContext());
+        myDateSelectedViewModel.deleteObligation(deleted);
+        calendarViewModel.removeObligation(deleted);
+    }
     @SuppressLint("SetTextI18n")
     private void initObservers(View view){
         myDateSelectedViewModel.getDate().observe(getViewLifecycleOwner(), e->{
