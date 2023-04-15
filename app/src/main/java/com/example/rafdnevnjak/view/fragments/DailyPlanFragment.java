@@ -33,11 +33,13 @@ import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.model.MyDate;
 import com.example.rafdnevnjak.utils.Utils;
 import com.example.rafdnevnjak.view.activites.DetailsActivity;
+import com.example.rafdnevnjak.view.activites.NewObligationActivity;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationAdapter;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationItemClickListener;
 import com.example.rafdnevnjak.view.recycler.differ.ObligationDiffItemCallback;
 import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
 import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.time.LocalDate;
@@ -66,6 +68,8 @@ public class DailyPlanFragment extends Fragment {
     private EditText filterByTitleEt;
 
     private CheckBox pastObligationsCb;
+    private FloatingActionButton actionButton;
+    private LocalDate date;
 
 
     public DailyPlanFragment(){super(R.layout.fragment_dailyplan);}
@@ -91,6 +95,7 @@ public class DailyPlanFragment extends Fragment {
 
         filterByTitleEt = view.findViewById(R.id.filerByTitleEt);
         pastObligationsCb = view.findViewById(R.id.pastObligationsCb);
+        actionButton = view.findViewById(R.id.floatingActionButton);
 
         initRecycler(view);
         initObservers(view);
@@ -136,24 +141,41 @@ public class DailyPlanFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("USAO ON RESULT DAILY FRAGMENT");
 
-        Duty deleted = (Duty) data.getSerializableExtra("deleted");
+        if(requestCode == 111) {
+            Duty deleted = (Duty) data.getSerializableExtra("deleted");
 
-        if (deleted==null)return;
-        System.out.println("-------------");
-        System.out.println(myDateSelectedViewModel.getDate().getValue().getDutyList());
-        System.out.println(deleted);
-        System.out.println(deleted.getTitle() + " " +deleted.getId());
+            if (deleted == null) return;
+            System.out.println("-------------");
+            System.out.println(myDateSelectedViewModel.getDate().getValue().getDutyList());
+            System.out.println(deleted);
+            System.out.println(deleted.getTitle() + " " + deleted.getId());
 
-        Utils.deleteObligationById(deleted.getId(), getContext());
-        myDateSelectedViewModel.deleteObligation(deleted);
-        calendarViewModel.removeObligation(deleted);
+            Utils.deleteObligationById(deleted.getId(), getContext());
+            calendarViewModel.removeObligation(deleted);
+            myDateSelectedViewModel.deleteObligation(deleted);
+        }
+        else if (requestCode == 222){
+            Duty newObligation = null;
+            if (data != null) {
+                newObligation = (Duty) data.getSerializableExtra("newObligation");
+                if (newObligation==null) return;
+
+                newObligation.setDate(date);
+
+                Utils.addObligation(newObligation, (getActivity().getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE)).getLong("id", 1), getActivity());
+                calendarViewModel.addObligation(newObligation, newObligation.getDate());
+                myDateSelectedViewModel.addObligation(newObligation);
+                obligationAdapter.notifyDataSetChanged();
+            }
+        }
     }
     @SuppressLint("SetTextI18n")
     private void initObservers(View view){
         myDateSelectedViewModel.getDate().observe(getViewLifecycleOwner(), e->{
-            System.out.println("Selektovan "+e.getDate());
+            System.out.println("Selektovan "+e.getDate() + " "+e.getDutyList().size());
             String month = e.getDate().getMonth().toString();
             obligationAdapter.submitList(e.getDutyList());
+            date = e.getDate();
             dateTV.setText(month.substring(0,1).toUpperCase()+month.substring(1).toLowerCase() + " "+ e.getDate().getDayOfMonth()+". "+e.getDate().getYear()+".");
         });
     }
@@ -173,6 +195,13 @@ public class DailyPlanFragment extends Fragment {
             if(highPriorityBtnClickCnt%2==0) obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList().stream().filter(duty ->  duty.getPriority().equals(DutyPriority.HIGH)).collect(Collectors.toList()));
             else obligationAdapter.submitList(myDateSelectedViewModel.getDate().getValue().getDutyList());
             highPriorityBtnClickCnt++;
+        });
+
+        actionButton.setOnClickListener(view -> {
+            Intent i = new Intent(getActivity(), NewObligationActivity.class);
+            i.putExtra("date", dateTV.getText());
+            startActivityForResult(i, 222);
+            System.out.println("FLOATING BUTTON");
         });
 
         filterByTitleEt.addTextChangedListener(new TextWatcher() {

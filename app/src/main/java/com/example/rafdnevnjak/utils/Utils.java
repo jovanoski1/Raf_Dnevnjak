@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.rafdnevnjak.db.DataBaseHelper;
+import com.example.rafdnevnjak.model.Duty;
 
 public class Utils {
     public static void addObligation(String startTime, String endTime, String title, String description, int priority,int userId, Context context) {
@@ -27,6 +28,28 @@ public class Utils {
             Log.d("Database", "Error inserting obligation");
         } else {
             Log.d("Database", "Obligation inserted successfully");
+        }
+    }
+    public static void addObligation(Duty duty, Long userId, Context context) {
+        DataBaseHelper dbHelper = new DataBaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("start_time",duty.getDate() + " "+ duty.getStartTime()+":00"); // Use a string in ISO8601 format
+        values.put("end_time", duty.getDate() +" "+duty.getEndTime()+":00");
+        values.put("title", duty.getTitle());
+        values.put("description", duty.getDescription());
+        values.put("userId", userId);
+        values.put("priority", duty.getPriority().ordinal());
+
+        long result = db.insert("obligations", null, values);
+        db.close();
+
+        if (result == -1) {
+            Log.d("Database", "Error inserting obligation");
+        } else {
+            Log.d("Database", "Obligation inserted successfully with id "+result);
+            duty.setId(result);
         }
     }
 

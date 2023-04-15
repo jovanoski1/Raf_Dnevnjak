@@ -28,7 +28,14 @@ public class MyDateSelectedViewModel extends ViewModel {
             dateToSubmit.setDutyList(duties);
             date.setValue(dateToSubmit);
         }
-
+    }
+    public void addObligation(Duty duty){
+        MyDate dateToSubmit = new MyDate(date.getValue().getDate());
+        List<Duty> duties = new ArrayList<>(date.getValue().getDutyList());
+        //duties.add(duty);
+        dateToSubmit.setDutyList(duties);
+        dateToSubmit.updateHighestPriority();
+        date.setValue(dateToSubmit);
     }
 
     public MutableLiveData<MyDate> getDate() {
