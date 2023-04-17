@@ -17,9 +17,14 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.utils.Utils;
+import com.example.rafdnevnjak.view.activites.EditObligationActivity;
 import com.example.rafdnevnjak.viewmodels.CalendarViewModel;
 import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObligationDetailsFragment extends Fragment {
 
@@ -30,6 +35,7 @@ public class ObligationDetailsFragment extends Fragment {
     private AppCompatButton editBtn;
     private AppCompatButton deleteBtn;
     private Duty duty;
+    private List<Duty> dutyList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -37,14 +43,36 @@ public class ObligationDetailsFragment extends Fragment {
         return inflater.inflate(R.layout.layout_detail_obligation, container, false);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==3352 && data!=null){
+            Duty editedDuty = (Duty) data.getSerializableExtra("editedObligation");
+
+            Intent i = new Intent();
+            i.putExtra("editedObligation", editedDuty);
+            getActivity().setResult(333, i);
+            getActivity().finish();
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
         duty = ((Duty)args.getSerializable("object"));
+        dutyList = (List<Duty>) args.getSerializable("obligations");
         //System.out.println(((Duty)args.getSerializable("object")).getTitle());
-
+        System.out.println(dutyList);
         initView(view);
+
+
+        editBtn.setOnClickListener(e->{
+            Intent i = new Intent(getActivity(), EditObligationActivity.class);
+            i.putExtra("currentItem", duty);
+            i.putExtra("obligations", (Serializable) dutyList);
+            startActivityForResult(i, 3352);
+        });
 
         deleteBtn.setOnClickListener(e->{
             Snackbar.make(view,"Confirm deletition of "+duty.getTitle(), Snackbar.LENGTH_SHORT)

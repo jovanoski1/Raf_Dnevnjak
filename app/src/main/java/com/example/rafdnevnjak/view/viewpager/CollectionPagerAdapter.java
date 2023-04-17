@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import com.example.rafdnevnjak.model.Duty;
 import com.example.rafdnevnjak.view.fragments.ObligationDetailsFragment;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
@@ -28,6 +29,7 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         Fragment fragment = new ObligationDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable("object", duties.get(position));
+        args.putSerializable("obligations", (Serializable) duties);
         fragment.setArguments(args);
         return fragment;
     }

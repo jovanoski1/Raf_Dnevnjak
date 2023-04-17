@@ -147,8 +147,9 @@ public class DailyPlanFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         System.out.println("USAO ON RESULT DAILY FRAGMENT");
+        System.out.println(requestCode + " " +resultCode);
 
-        if(requestCode == 111) {
+        if(resultCode == 111) {
             if (data==null)return;
             Duty deleted = (Duty) data.getSerializableExtra("deleted");
 
@@ -162,7 +163,7 @@ public class DailyPlanFragment extends Fragment {
             calendarViewModel.removeObligation(deleted);
             myDateSelectedViewModel.deleteObligation(deleted);
         }
-        else if (requestCode == 222){
+        else if (resultCode == 222){
             Duty newObligation = null;
             if (data != null) {
                 newObligation = (Duty) data.getSerializableExtra("newObligation");
@@ -176,7 +177,7 @@ public class DailyPlanFragment extends Fragment {
                 obligationAdapter.notifyDataSetChanged();
             }
         }
-        else if (requestCode == 333 && data!=null){
+        else if (resultCode == 333 && data!=null){
             System.out.println("EDITED");
             Duty edited = (Duty) data.getSerializableExtra("editedObligation");
 
