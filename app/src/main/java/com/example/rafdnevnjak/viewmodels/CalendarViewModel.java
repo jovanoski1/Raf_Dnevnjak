@@ -28,6 +28,29 @@ public class CalendarViewModel extends ViewModel {
 
     }
 
+    public void updateObligation(Duty duty){
+        for (MyDate myDate: dateList){
+            boolean found = false;
+            if (myDate.getDate().equals(duty.getDate())){
+                for (Duty d:myDate.getDutyList()){
+                    if (d.equals(duty)){
+                        d.setEndTime(duty.getEndTime());
+                        d.setDescription(duty.getDescription());
+                        d.setStartTime(duty.getStartTime());
+                        d.setTitle(duty.getTitle());
+                        d.setPriority(duty.getPriority());
+                        found = true;
+                        myDate.updateHighestPriority();
+                        break;
+                    }
+                }
+            }
+            if (found)break;
+        }
+        List<MyDate> listToSubmit = new ArrayList<>(dateList);
+        dates.setValue(listToSubmit);
+    }
+
     public void addObligation(Duty duty, LocalDate ld){
         for(MyDate myDate : dateList){
             if(myDate.getDate().equals(ld)){

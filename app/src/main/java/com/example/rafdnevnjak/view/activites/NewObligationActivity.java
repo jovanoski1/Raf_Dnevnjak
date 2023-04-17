@@ -38,6 +38,7 @@ public class NewObligationActivity extends AppCompatActivity {
         initView();
         initListeners();
         dateTv.setText(getIntent().getStringExtra("date"));
+        System.out.println(getIntent().getSerializableExtra("obligations"));
     }
 
     private void initView(){

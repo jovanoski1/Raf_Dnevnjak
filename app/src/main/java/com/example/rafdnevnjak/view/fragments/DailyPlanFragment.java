@@ -33,6 +33,7 @@ import com.example.rafdnevnjak.model.DutyPriority;
 import com.example.rafdnevnjak.model.MyDate;
 import com.example.rafdnevnjak.utils.Utils;
 import com.example.rafdnevnjak.view.activites.DetailsActivity;
+import com.example.rafdnevnjak.view.activites.EditObligationActivity;
 import com.example.rafdnevnjak.view.activites.NewObligationActivity;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationAdapter;
 import com.example.rafdnevnjak.view.recycler.adapter.ObligationItemClickListener;
@@ -42,6 +43,7 @@ import com.example.rafdnevnjak.viewmodels.MyDateSelectedViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -110,6 +112,11 @@ public class DailyPlanFragment extends Fragment {
             @Override
             public void onEditClick(Duty duty) {
                 System.out.println("CLICK EDIT : " + duty.getTitle());
+                Intent intent = new Intent(getActivity(), EditObligationActivity.class);
+                ArrayList<Duty> duties = (ArrayList<Duty>) myDateSelectedViewModel.getDate().getValue().getDutyList();
+                intent.putExtra("obligations", duties);
+                intent.putExtra("currentItem", duty);
+                startActivityForResult(intent, 333);
             }
 
             @Override
@@ -142,6 +149,7 @@ public class DailyPlanFragment extends Fragment {
         System.out.println("USAO ON RESULT DAILY FRAGMENT");
 
         if(requestCode == 111) {
+            if (data==null)return;
             Duty deleted = (Duty) data.getSerializableExtra("deleted");
 
             if (deleted == null) return;
@@ -164,9 +172,16 @@ public class DailyPlanFragment extends Fragment {
 
                 Utils.addObligation(newObligation, (getActivity().getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE)).getLong("id", 1), getActivity());
                 calendarViewModel.addObligation(newObligation, newObligation.getDate());
-                myDateSelectedViewModel.addObligation(newObligation);
+                //myDateSelectedViewModel.addObligation(newObligation);
                 obligationAdapter.notifyDataSetChanged();
             }
+        }
+        else if (requestCode == 333 && data!=null){
+            System.out.println("EDITED");
+            Duty edited = (Duty) data.getSerializableExtra("editedObligation");
+
+            calendarViewModel.updateObligation(edited);
+            obligationAdapter.notifyDataSetChanged();
         }
     }
     @SuppressLint("SetTextI18n")
@@ -200,6 +215,7 @@ public class DailyPlanFragment extends Fragment {
         actionButton.setOnClickListener(view -> {
             Intent i = new Intent(getActivity(), NewObligationActivity.class);
             i.putExtra("date", dateTV.getText());
+            i.putExtra("obligations", (Serializable) myDateSelectedViewModel.getDate().getValue().getDutyList());
             startActivityForResult(i, 222);
             System.out.println("FLOATING BUTTON");
         });
