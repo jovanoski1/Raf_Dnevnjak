@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.model.Duty;
@@ -16,6 +17,7 @@ import com.example.rafdnevnjak.model.DutyPriority;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class NewObligationActivity extends AppCompatActivity {
 
@@ -71,6 +73,28 @@ public class NewObligationActivity extends AppCompatActivity {
             duty.setStartTime(startTime);
             duty.setEndTime(endTime);
             duty.setPriority(dutyPriority);
+
+            List<Duty> duties = (List<Duty>) getIntent().getSerializableExtra("obligations");
+            for (Duty d: duties){
+                if (d.equals(duty))continue;
+
+                if (duty.getStartTime().equals(d.getStartTime())){
+                    Toast.makeText(this, "This time-slot already taken!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (duty.getEndTime().equals(d.getEndTime())){
+                    Toast.makeText(this, "This time-slot already taken!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (duty.getStartTime().isAfter(d.getStartTime())&&duty.getStartTime().isBefore(d.getEndTime())){
+                    Toast.makeText(this, "This time-slot already taken!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (duty.getEndTime().isAfter(d.getStartTime())&&duty.getStartTime().isBefore(d.getEndTime())){
+                    Toast.makeText(this, "This time-slot already taken!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
 
             Intent i = new Intent();
             i.putExtra("newObligation", duty);
