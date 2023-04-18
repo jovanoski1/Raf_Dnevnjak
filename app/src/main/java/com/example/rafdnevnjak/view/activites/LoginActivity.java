@@ -12,9 +12,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.rafdnevnjak.R;
 import com.example.rafdnevnjak.db.DataBaseHelper;
@@ -40,6 +45,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextPassword;
     private Button loginButton;
+
+    private TextView emailErrorTv;
+    private TextView usernameErrorTv;
+    private TextView passwordErrorTv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +77,9 @@ public class LoginActivity extends AppCompatActivity {
         editTextUsername = findViewById(R.id.editTextUsername);
         editTextPassword = findViewById(R.id.editTextPassword);
         loginButton = findViewById(R.id.loginBtn);
+        emailErrorTv = findViewById(R.id.emailErrorTv);
+        usernameErrorTv = findViewById(R.id.usernameErrorTv);
+        passwordErrorTv = findViewById(R.id.passwordErrorTv);
 
         boolean mboolean = false;
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
@@ -121,15 +134,31 @@ public class LoginActivity extends AppCompatActivity {
 
             Pattern patternEmail = Pattern.compile(regexEmail);
             String email = String.valueOf(editTextEmail.getText());
+            String username = String.valueOf(editTextUsername.getText());
+            String password = String.valueOf(editTextPassword.getText());
+
+            boolean emptyField = false;
+            if (email.isEmpty()){
+                emailErrorTv.setVisibility(View.VISIBLE);
+                emptyField = true;
+            }
+            if (username.isEmpty()){
+                usernameErrorTv.setVisibility(View.VISIBLE);
+                emptyField = true;
+            }
+            if (password.isEmpty()){
+                passwordErrorTv.setVisibility(View.VISIBLE);
+                emptyField = true;
+            }
+            if (emptyField)return;
 
             if(patternEmail.matcher(email).matches()){
                 //System.out.println("Match");
             }else{
                 //System.out.println("NO match");
+                Toast.makeText(this, "Wrong email pattern!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String username = String.valueOf(editTextUsername.getText());
-            String password = String.valueOf(editTextPassword.getText());
 
             int numChars = password.replaceAll("[^a-z]+", "").length();
             int numCapitalChars = password.replaceAll("[^A-Z]+", "").length();
@@ -137,11 +166,13 @@ public class LoginActivity extends AppCompatActivity {
             int numSpecial = password.replaceAll("[^!@#$%^&*()_+.-]", "").length();
             System.out.println(numChars + " "+numCapitalChars);
             if (numChars >=1 && numDigits >= 1 && numCapitalChars >=1 &&
-                    numSpecial < 1) {
+                    numSpecial < 1 && password.length()>=5) {
                 //System.out.println("password is valid");
             }
             else {
                 //System.out.println("password is invalid");
+                Toast.makeText(this, "Password has to contain at least: 5 characters, 1 upper, 1 lower" +
+                        ", 1 digit cant contain special characters", Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -168,11 +199,12 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("username", username);
                     editor.putString("password", password);
                     editor.apply();
+                    Toast.makeText(this, "Successful login", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                 }
             }
-
+            Toast.makeText(this, "Incorrect credentials", Toast.LENGTH_SHORT).show();
             cursor.close();
             db.close();
 
@@ -202,6 +234,55 @@ public class LoginActivity extends AppCompatActivity {
 //            } catch (IOException ex) {
 //                throw new RuntimeException(ex);
 //            }
+        });
+
+        editTextEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                emailErrorTv.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        editTextUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                usernameErrorTv.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                passwordErrorTv.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
     }
 
