@@ -113,6 +113,7 @@ public class EditObligationActivity extends AppCompatActivity {
                 }
             }
 
+            Toast.makeText(this, "Successfully edited obligation!", Toast.LENGTH_SHORT).show();
             Intent i = new Intent();
             i.putExtra("editedObligation", duty);
             setResult(333,i);

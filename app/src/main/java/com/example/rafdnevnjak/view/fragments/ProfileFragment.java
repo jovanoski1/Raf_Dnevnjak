@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,7 +69,11 @@ public class ProfileFragment extends Fragment {
         logoutBtn = view.findViewById(R.id.logoutBtn);
         changePasswordBtn = view.findViewById(R.id.changePasswordBtn);
         sharedPreferences = Objects.requireNonNull(getActivity()).getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE);
-        emailTextView.setText(sharedPreferences.getString("email","email@email.com"));
+
+        String emailString = sharedPreferences.getString("email", "email@email.com");
+        SpannableString content = new SpannableString(emailString);
+        content.setSpan(new UnderlineSpan(), 0, emailString.length(), 0);
+        emailTextView.setText(content);
     }
     private void initListeners(){
         logoutBtn.setOnClickListener(e->{

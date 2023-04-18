@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/obligation_blue"
     android:orientation="vertical">
 
     <LinearLayout
@@ -9,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="top|center"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="80dp">
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,6 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:textSize="64px"
             android:text="Student"/>
 
@@ -27,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textColor="@color/black"
             android:textSize="64px"
             android:text="email@email.com"/>
 
@@ -41,39 +44,43 @@
         <EditText
             android:id="@+id/editTextTextPassword"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40sp"
             android:ems="10"
             android:visibility="invisible"
             android:width="250dp"
             android:hint="New password"
+            android:background="@drawable/login_form_edit_text"
             android:inputType="textPassword" />
         <EditText
             android:id="@+id/editTextTextPasswordConfirm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40sp"
             android:layout_marginTop="10dp"
             android:ems="10"
             android:width="250dp"
             android:visibility="invisible"
+            android:background="@drawable/login_form_edit_text"
             android:hint="Confirm new password"
             android:inputType="textPassword" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/changePasswordBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change password"
             android:layout_marginTop="20dp"
             android:width="250dp"
+            android:background="@drawable/login_button_style"
             />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Logout"
+            android:text="Log out"
             android:id="@+id/logoutBtn"
             android:layout_marginTop="10dp"
             android:width="250dp"
+            android:background="@drawable/layout_delete_button"
             />
 
     </LinearLayout>
