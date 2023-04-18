@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Raf Dnevnjak</string>
+    <string name="log_out">Izloguj se</string>
+    <string name="change_password">Promeni šifru</string>
+    <string name="confirm_new_password">Potvrdi novu šifru</string>
+    <string name="new_password">Nova šifra</string>
+    <string name="student">Student</string>
+    <string name="edit">Izmeni</string>
+    <string name="delete">Obriši</string>
+    <string name="show_past_obligations">Prikaži prošle obaveze</string>
+    <string name="search">Pretraga</string>
+    <string name="low">Nizak</string>
+    <string name="mid">Srednji</string>
+    <string name="high">Visok</string>
+    <string name="mon">Pon</string>
+    <string name="tue">Uto</string>
+    <string name="wed">Sre</string>
+    <string name="thu">Čet</string>
+    <string name="fri">Pet</string>
+    <string name="sat">Sub</string>
+    <string name="sun">Ned</string>
+    <string name="title">Naslov</string>
+    <string name="time">Vreme</string>
+    <string name="create">Kreiraj</string>
+    <string name="cancel">Odustani</string>
+    <string name="enter_username">Unesi username</string>
+    <string name="email_can_t_be_empty">Email ne sme biti prazan!</string>
+    <string name="enter_email">Unesi email</string>
+    <string name="username_can_t_be_empty">Username ne sme biti prazno!</string>
+    <string name="enter_password">Unesi šifru</string>
+    <string name="password_can_t_be_empty">Šifra ne sme biti prazna!</string>
+    <string name="login">Uloguj se</string>
+    <string name="save">Sačuvaj</string>
+</resources>

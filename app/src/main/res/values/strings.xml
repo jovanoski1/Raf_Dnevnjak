@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">Raf Dnevnjak</string>
+    <string name="log_out">Log out</string>
+    <string name="change_password">Change password</string>
+    <string name="confirm_new_password">Confirm new password</string>
+    <string name="new_password">New password</string>
+    <string name="student">Student</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="show_past_obligations">Show past obligations</string>
+    <string name="search">Search</string>
+    <string name="low">Low</string>
+    <string name="mid">Mid</string>
+    <string name="high">High</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="sun">Sun</string>
+    <string name="title">Title</string>
+    <string name="time">Time</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_username">Enter username</string>
+    <string name="email_can_t_be_empty">Email can\'t be empty!</string>
+    <string name="enter_email">Enter email</string>
+    <string name="username_can_t_be_empty">Username can\'t be empty!</string>
+    <string name="enter_password">Enter password</string>
+    <string name="password_can_t_be_empty">Password can\'t be empty!</string>
+    <string name="login">Login</string>
+    <string name="save">Save</string>
 </resources>

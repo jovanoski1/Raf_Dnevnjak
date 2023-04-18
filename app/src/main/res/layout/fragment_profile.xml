@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="64px"
-            android:text="Student"/>
+            android:textSize="32sp"
+            android:text="@string/student"/>
 
         <TextView
             android:id="@+id/editTextProfileEmail"
@@ -30,8 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textColor="@color/black"
-            android:textSize="64px"
-            android:text="email@email.com"/>
+            android:textSize="28sp"
+            />
 
     </LinearLayout>
 
@@ -48,7 +48,7 @@
             android:ems="10"
             android:visibility="invisible"
             android:width="250dp"
-            android:hint="New password"
+            android:hint="@string/new_password"
             android:background="@drawable/login_form_edit_text"
             android:inputType="textPassword" />
         <EditText
@@ -60,14 +60,14 @@
             android:width="250dp"
             android:visibility="invisible"
             android:background="@drawable/login_form_edit_text"
-            android:hint="Confirm new password"
+            android:hint="@string/confirm_new_password"
             android:inputType="textPassword" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/changePasswordBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change password"
+            android:text="@string/change_password"
             android:layout_marginTop="20dp"
             android:width="250dp"
             android:background="@drawable/login_button_style"
@@ -76,7 +76,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log out"
+            android:text="@string/log_out"
             android:id="@+id/logoutBtn"
             android:layout_marginTop="10dp"
             android:width="250dp"

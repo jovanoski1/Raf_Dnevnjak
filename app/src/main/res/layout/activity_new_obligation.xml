@@ -14,8 +14,7 @@
         android:layout_height="70dp"
         android:textColor="@color/black"
         android:textSize="26sp"
-        android:gravity="center"
-        android:text="Add new Obligation"/>
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +26,7 @@
             android:id="@+id/newobligation_lowbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Low"
+            android:text="@string/low"
             android:layout_weight="1"
             android:background="@drawable/priority_button_low_border"
             android:textColor="@color/black"/>
@@ -36,7 +35,7 @@
             android:id="@+id/newobligation_midbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Mid"
+            android:text="@string/mid"
             android:layout_weight="1"
             android:textColor="@color/black"
             android:background="@drawable/priority_button_mid"/>
@@ -45,7 +44,7 @@
             android:id="@+id/newobligation_highbtn"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="High"
+            android:text="@string/high"
             android:layout_weight="1"
             android:textColor="@color/black"
             android:background="@drawable/priority_button_high"/>
@@ -63,7 +62,7 @@
         android:layout_marginRight="15sp"
         android:layout_marginTop="15sp"
         android:background="@drawable/round_blue_border"
-        android:hint="Title"/>
+        android:hint="@string/title"/>
 
     <EditText
         android:id="@+id/newobligation_time_ed"
@@ -78,7 +77,7 @@
         android:layout_marginTop="15sp"
         android:drawablePadding="15sp"
         android:background="@drawable/round_blue_border"
-        android:hint="Time"/>
+        android:hint="@string/time"/>
 
     <EditText
         android:id="@+id/newobligation_desc_ed"
@@ -114,8 +113,8 @@
                 android:layout_width="170dp"
                 android:background="@drawable/layout_edit_button"
                 android:layout_height="50dp"
-                android:textSize="20dp"
-                android:text="Create"/>
+                android:textSize="20sp"
+                android:text="@string/create"/>
         </LinearLayout>
 
         <LinearLayout
@@ -129,8 +128,8 @@
                 android:layout_width="170dp"
                 android:background="@drawable/layout_delete_button"
                 android:layout_height="50dp"
-                android:textSize="20dp"
-                android:text="Cancel"/>
+                android:textSize="20sp"
+                android:text="@string/cancel"/>
         </LinearLayout>
 
     </LinearLayout>
