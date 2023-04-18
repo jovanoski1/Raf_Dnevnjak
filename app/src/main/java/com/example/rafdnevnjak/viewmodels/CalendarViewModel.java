@@ -8,6 +8,7 @@ import com.example.rafdnevnjak.model.MyDate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,6 +56,13 @@ public class CalendarViewModel extends ViewModel {
         for(MyDate myDate : dateList){
             if(myDate.getDate().equals(ld)){
                 myDate.getDutyList().add(duty);
+                myDate.getDutyList().sort(new Comparator<Duty>() {
+                    @Override
+                    public int compare(Duty duty, Duty t1) {
+                        if (duty.getStartTime().isBefore(t1.getStartTime())) return -1;
+                        return 1;
+                    }
+                });
                 if (myDate.getHighestPriority() == null) myDate.setHighestPriority(duty.getPriority());
                 else if(duty.getPriority().ordinal() > myDate.getHighestPriority().ordinal()) myDate.setHighestPriority(duty.getPriority());
                 break;

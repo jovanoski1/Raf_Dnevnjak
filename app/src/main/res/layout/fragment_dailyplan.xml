@@ -97,22 +97,30 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/obligationRv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:layout_gravity="bottom|end"
-        app:maxImageSize="55dp"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/white"
-        android:contentDescription="New obligation"
-        app:srcCompat="@drawable/plus" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/obligationRv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:maxImageSize="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/white"
+            android:contentDescription="New obligation"
+            app:srcCompat="@drawable/plus" />
+
+    </RelativeLayout>
 
 </LinearLayout>
