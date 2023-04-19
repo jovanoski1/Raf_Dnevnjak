@@ -53,6 +53,24 @@ public class Utils {
         }
     }
 
+
+    public static int updateObligation(Duty duty, Context context) {
+        DataBaseHelper dbHelper = new DataBaseHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("start_time",duty.getDate() + " "+ duty.getStartTime()+":00"); // Use a string in ISO8601 format
+        values.put("end_time", duty.getDate() +" "+duty.getEndTime()+":00");
+        values.put("title", duty.getTitle());
+        values.put("description", duty.getDescription());
+        values.put("priority", duty.getPriority().ordinal());
+
+        int rowsAffected = db.update("obligations", values, "_id = ?",
+                new String[] { String.valueOf(duty.getId()) });
+        db.close();
+        return rowsAffected;
+    }
+
     public static void deleteObligationById(Long id, Context context) {
         DataBaseHelper dbHelper = new DataBaseHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();

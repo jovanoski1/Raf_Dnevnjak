@@ -181,6 +181,7 @@ public class DailyPlanFragment extends Fragment {
             System.out.println("EDITED");
             Duty edited = (Duty) data.getSerializableExtra("editedObligation");
 
+            Utils.updateObligation(edited,getActivity());
             calendarViewModel.updateObligation(edited);
             obligationAdapter.notifyDataSetChanged();
         }
