@@ -62,8 +62,13 @@ public class ObligationAdapter extends ListAdapter<Duty, ObligationAdapter.Oblig
             else if(duty.getPriority().equals(DutyPriority.MID)) ((ImageView)itemView.findViewById(R.id.obligationPictureIv)).setBackgroundColor(Color.parseColor("#F7CD35"));
             else ((ImageView)itemView.findViewById(R.id.obligationPictureIv)).setBackgroundColor(Color.parseColor("#F58A51"));
 
+            System.out.println(duty.getDate() + " "+LocalDate.now());
+            System.out.println(duty.getStartTime()+ " " +LocalTime.now());
             if(duty.getDate().isBefore(LocalDate.now()) ||(duty.getDate().isEqual(LocalDate.now()) && duty.getStartTime().isBefore(LocalTime.now())))
                 ((ConstraintLayout)itemView.findViewById(R.id.obligationItem)).setBackgroundResource(R.drawable.layout_border_past_obligation);
+            else
+                ((ConstraintLayout)itemView.findViewById(R.id.obligationItem)).setBackgroundResource(R.drawable.layout_border);
+
             ((TextView)itemView.findViewById(R.id.obligationTitleTv)).setText(duty.getTitle());
             ((TextView)itemView.findViewById(R.id.timeStartEndTv)).setText(duty.getStartTime() +" - "+duty.getEndTime());
 

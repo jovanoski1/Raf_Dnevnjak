@@ -160,12 +160,14 @@ public class DailyPlanFragment extends Fragment {
             System.out.println(deleted.getTitle() + " " + deleted.getId());
 
             Utils.deleteObligationById(deleted.getId(), getContext());
-            calendarViewModel.removeObligation(deleted);
             myDateSelectedViewModel.deleteObligation(deleted);
+            calendarViewModel.removeObligation(deleted);
+            obligationAdapter.notifyDataSetChanged();
         }
         else if (resultCode == 222){
             Duty newObligation = null;
             if (data != null) {
+                System.out.println("USAOOO");
                 newObligation = (Duty) data.getSerializableExtra("newObligation");
                 if (newObligation==null) return;
 
@@ -173,7 +175,7 @@ public class DailyPlanFragment extends Fragment {
 
                 Utils.addObligation(newObligation, (getActivity().getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE)).getLong("id", 1), getActivity());
                 calendarViewModel.addObligation(newObligation, newObligation.getDate());
-                //myDateSelectedViewModel.addObligation(newObligation);
+                myDateSelectedViewModel.addObligation(newObligation);
                 obligationAdapter.notifyDataSetChanged();
             }
         }

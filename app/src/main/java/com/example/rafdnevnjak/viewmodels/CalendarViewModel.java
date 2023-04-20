@@ -54,12 +54,14 @@ public class CalendarViewModel extends ViewModel {
 
     public void addObligation(Duty duty, LocalDate ld){
         for(MyDate myDate : dateList){
-            if(myDate.getDate().equals(ld)){
+            if(myDate.getDate().equals(ld) && !myDate.getDutyList().contains(duty)){
+                System.out.println("dodao");
                 myDate.getDutyList().add(duty);
                 myDate.getDutyList().sort(new Comparator<Duty>() {
                     @Override
                     public int compare(Duty duty, Duty t1) {
                         if (duty.getStartTime().isBefore(t1.getStartTime())) return -1;
+                        if (duty.getStartTime().equals(t1.getStartTime())) return 0;
                         return 1;
                     }
                 });
@@ -73,9 +75,10 @@ public class CalendarViewModel extends ViewModel {
     }
 
     public void removeObligation(Duty duty){
+        List<Duty> dd;
         for(MyDate d:dateList){
             if(d.getDate().equals(duty.getDate())){
-                List<Duty> dd = new ArrayList<>(d.getDutyList());
+                dd = new ArrayList<>(d.getDutyList());
                 dd.remove(duty);
                 d.setDutyList(dd);
                 d.updateHighestPriority();
